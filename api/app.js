@@ -22,4 +22,6 @@ app.use(function(req, res) {
 
 app.listen(port);
 
-console.log('API server started on: ' + port);
+console.clear();
+console.log('[ INFO ] API server started on port: ' + port);
+

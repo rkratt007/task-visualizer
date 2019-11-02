@@ -18,6 +18,9 @@
   "homepage": "https://github.com/rkratt007/task-visualizer#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongodb": "^3.3.3",
+    "mongoose": "^5.7.7",
+    "promise": "^8.0.3"
   }
 }

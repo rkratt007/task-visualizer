@@ -1,7 +1,5 @@
 'use strict';
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 function _id_blank (req, res) {
 	output_response(req, res, 500,"User id is empty. Please Try again.");
 };
@@ -24,7 +22,7 @@ function output_response (req, res, output_code, output) {
 };
 
 
-_get_parms : (req) => {
+function _get_parms (req) {
 
 	var parms = req.params;
 	var body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
@@ -49,9 +47,6 @@ _get_parms : (req) => {
 
 	return myprams;
 };
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 module.exports = {
 	id_blank : (req, res) => {

@@ -1,14 +1,13 @@
 'use strict';
-
-const db_type = 'mongodb',                                              // Database Type Mongodb or Mysql
-      db_server_ip = '127.0.0.1',                                       // IP Adresss of the server you trying to connect to
-      db_server_address  = db_type + '://' + db_server_ip + '/DBtasks'; // Database connecting address
+const db_type = 'mongodb', // Database Type Mongodb
+      db_server_ip = 'localhost', // IP Adresss of the server you trying to connect to
+      db_server_address  = db_type + '://' + db_server_ip + '/tasks_visualizer'; // Database connecting address
 
 module.exports = {
-	get_db_ip   : () => {
+	ip : () => {
 		return db_server_ip;
 	},
-	get_db_server   : () => {
+	address : () => {
 		return db_server_address;
 	},
 }
