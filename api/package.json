@@ -1,0 +1,23 @@
+{
+  "name": "api",
+  "version": "0.0.0",
+  "description": "api to pull and submit task information.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rkratt007/task-visualizer.git"
+  },
+  "author": "Ryan Kratt <rkratt@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rkratt007/task-visualizer/issues"
+  },
+  "homepage": "https://github.com/rkratt007/task-visualizer#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  }
+}
