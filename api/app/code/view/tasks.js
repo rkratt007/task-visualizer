@@ -24,8 +24,8 @@ function tasks (req, res) {
             } else {
                 // console.log('[ INFO ] ' + JSON.stringify(returned));
                 resposne.custom_reponse(req,res,'200',returned);
-        }
-    })
+            }
+        });
 };
 /************************************************************************************************************************************************/
 // Sample Tasks
@@ -50,15 +50,27 @@ function sample_data (req, res) {
         {id: '15', tasks_name : 'test5', tasks_time : '46', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/13/2019'}
     ];
 
-    Tasks.collection.insert(tasks, function (err, docs) {
-        if (err){
-            console.log('[ Error ] ' + err);
-            resposne.custom_reponse(req,res,'500','Error Occured When returning Tasks');
-        } else {
-            // console.log('[ INFO ] ' + JSON.stringify(tasks));
-            resposne.custom_reponse(req,res,'200','Inserting Tasks');
-        }
-    });
+    Tasks.find({})
+        .exec((err, returned) => {
+            if(err) {
+                console.log('[ Error ] ' + err);
+                resposne.custom_reponse(req,res,'500','Error Occured When returning Tasks');
+            } else {
+                if(returned == ''){
+                    Tasks.collection.insertMany(tasks, function (err, docs) {
+                        if (err){
+                            console.log('[ Error ] ' + err);
+                            resposne.custom_reponse(req,res,'500','Error Occured When returning Tasks');
+                        } else {
+                            // console.log('[ INFO ] ' + JSON.stringify(tasks));
+                            resposne.custom_reponse(req,res,'200','Inserting Tasks');
+                        }
+                    });
+                }else{
+                    resposne.custom_reponse(req,res,'500','Install of sample data failed');
+                }
+            }
+        });
 };
 /************************************************************************************************************************************************/
 // Delete Sample Tasks
