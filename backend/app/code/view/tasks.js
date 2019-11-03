@@ -123,7 +123,6 @@ function insert_one (req, res) {
 // Sample Tasks
 /*********************************************************************************************************************/
 function sample_data (req, res) {
-    console.log('[ INFO ] ' + 'inserting some tasks');
     let tasks = [
         {tasks_name : 'test1', task_status : 'Completed', tasks_time : '24', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/11/2019'},
         {tasks_name : 'test2', task_status : 'In Progress', tasks_time : '1', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/12/2019'},
@@ -166,8 +165,7 @@ function sample_data (req, res) {
 // Delete Sample Tasks
 /*********************************************************************************************************************/
 function remove_sample_data (req, res) {
-    console.log('[ INFO ] ' + 'deleting some tasks');
-    Tasks.remove(function (err, docs) {
+    Tasks.deleteMany(function (err, docs) {
         if (err){
             console.log('[ Error ] ' + err);
             resposne.custom_reponse(req,res,'500','Error Occured When deleting Tasks');
