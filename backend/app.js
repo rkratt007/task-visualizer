@@ -8,12 +8,13 @@ let express = require('express'),
     port = process.env.PORT || 3000,
     bodyParser = require('body-parser'),
     resposne = require('./app/code/helper/response'),
-    routes = require('./app/code/routes/target');
+    routes = require('./app/code/routes/target'),
+    cors = require('cors');
 
 app.use(bodyParser.urlencoded({ extended: true })),
 app.use(bodyParser.json()),
 app.use(bodyParser.text({ type: 'text/html' }));
-
+app.use(cors());
 routes(app);
 
 app.use(function(req, res) {
