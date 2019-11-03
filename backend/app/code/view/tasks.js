@@ -92,6 +92,7 @@ function insert_one (req, res) {
     let parms = resposne.get_parms(req);
     if(
         parms.tasks_name != null &&
+        parms.task_status != null &&
         parms.tasks_time != null &&
         parms.tasks_project != null &&
         parms.tasks_owners != null &&
@@ -99,6 +100,7 @@ function insert_one (req, res) {
     ){
         let insert = new Tasks();
         insert.tasks_name = parms.tasks_name,
+        insert.tasks_status = parms.task_status,
         insert.tasks_time = parms.tasks_time,
         insert.tasks_project = parms.tasks_project,
         insert.tasks_owners = parms.tasks_owners,
@@ -123,21 +125,21 @@ function insert_one (req, res) {
 function sample_data (req, res) {
     console.log('[ INFO ] ' + 'inserting some tasks');
     let tasks = [
-        {tasks_name : 'test1', tasks_time : '24', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/11/2019'},
-        {tasks_name : 'test2', tasks_time : '1', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/12/2019'},
-        {tasks_name : 'test3', tasks_time : '2', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/01/2019'},
-        {tasks_name : 'test4', tasks_time : '5', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/02/2019'},
-        {tasks_name : 'test5', tasks_time : '6', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/13/2019'},
-        {tasks_name : 'test1', tasks_time : '20', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/11/2019'},
-        {tasks_name : 'test2', tasks_time : '21', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/12/2019'},
-        {tasks_name : 'test3', tasks_time : '22', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/01/2019'},
-        {tasks_name : 'test4', tasks_time : '25', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/02/2019'},
-        {tasks_name : 'test5', tasks_time : '36', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/13/2019'},
-        {tasks_name : 'test1', tasks_time : '16', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/11/2019'},
-        {tasks_name : 'test2', tasks_time : '11', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/12/2019'},
-        {tasks_name : 'test3', tasks_time : '12', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/01/2019'},
-        {tasks_name : 'test4', tasks_time : '15', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/02/2019'},
-        {tasks_name : 'test5', tasks_time : '46', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/13/2019'}
+        {tasks_name : 'test1', task_status : 'Completed', tasks_time : '24', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/11/2019'},
+        {tasks_name : 'test2', task_status : 'In Progress', tasks_time : '1', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/12/2019'},
+        {tasks_name : 'test3', task_status : 'Completed', tasks_time : '2', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/01/2019'},
+        {tasks_name : 'test4', task_status : 'Not Started', tasks_time : '5', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/02/2019'},
+        {tasks_name : 'test5', task_status : 'Completed', tasks_time : '6', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/13/2019'},
+        {tasks_name : 'test6', task_status : 'In Progress', tasks_time : '20', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/11/2019'},
+        {tasks_name : 'test7', task_status : 'Completed', tasks_time : '21', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/12/2019'},
+        {tasks_name : 'test8', task_status : 'In Progress', tasks_time : '22', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/01/2019'},
+        {tasks_name : 'test9', task_status : 'In Progress', tasks_time : '25', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/02/2019'},
+        {tasks_name : 'test10', task_status : 'Not Started', tasks_time : '36', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/13/2019'},
+        {tasks_name : 'test11', task_status : 'Not Started', tasks_time : '16', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/11/2019'},
+        {tasks_name : 'test12', task_status : 'Completed', tasks_time : '11', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/12/2019'},
+        {tasks_name : 'test13', task_status : 'Completed', tasks_time : '12', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/01/2019'},
+        {tasks_name : 'test14', task_status : 'In Progress', tasks_time : '15', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/02/2019'},
+        {tasks_name : 'test15', task_status : 'Not Started', tasks_time : '46', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/13/2019'}
     ];
     Tasks.find({})
         .exec((err, returned) => {
