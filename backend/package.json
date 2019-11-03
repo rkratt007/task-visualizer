@@ -4,7 +4,7 @@
   "description": "api to pull and submit task information.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start" : "./node_modules/nodemon/bin/nodemon.js app.js --ignore var/*"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
     "express": "^4.17.1",
     "mongodb": "^3.3.3",
     "mongoose": "^5.7.7",
+    "nodemon": "^1.19.4",
     "promise": "^8.0.3"
   }
 }
