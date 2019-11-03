@@ -48,7 +48,7 @@ function tasks_by_user (req, res) {
 function del_by_id (req, res) {
     let parms = resposne.get_parms(req);
     mongoose.set('useFindAndModify', false);
-    if(parms.tid !== ''){
+    if(parms.tid != null){
         Tasks.deleteOne({ _id: parms.tid })
             .exec((err, returned) => {
                 if(err) {
@@ -65,7 +65,7 @@ function del_by_id (req, res) {
 /*********************************************************************************************************************/
 function update_by_id (req, res) {
     let parms = resposne.get_parms(req);
-    if(parms.tid !== ''){
+    if(parms.tid != null){
         let query = { '_id' : parms.tid };
         let update = {
             'tasks_name' : parms.tasks_name,
