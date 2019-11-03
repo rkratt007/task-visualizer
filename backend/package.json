@@ -4,7 +4,7 @@
   "description": "api to pull and submit task information.",
   "main": "app.js",
   "scripts": {
-    "start" : "./node_modules/nodemon/bin/nodemon.js app.js --ignore var/*"
+    "start": "./node_modules/nodemon/bin/nodemon.js app.js --ignore var/*"
   },
   "repository": {
     "type": "git",
