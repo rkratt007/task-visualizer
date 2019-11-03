@@ -10,6 +10,8 @@ var TasksSchema = new Schema({
   tasks_project: String,
   tasks_owners: String,
   tasks_duedate: String,
+},{
+  versionKey: false
 });
 
 module.exports = mongoose.model('TaskList', TasksSchema, 'tasks');

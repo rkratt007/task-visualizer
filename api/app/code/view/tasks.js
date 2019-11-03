@@ -8,6 +8,8 @@ const Tasks = require('../models/tasks');
 const dbinfo = require('../etc/mogodb');;
 
 /*********************************************************************************************************************/
+// Mongoose settings and connection to database
+/*********************************************************************************************************************/
 mongoose.Promise = global.Promise;
 mongoose.connect(dbinfo.address(), { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
 
@@ -15,17 +17,105 @@ mongoose.connect(dbinfo.address(), { useUnifiedTopology: true, useNewUrlParser: 
 // Returns all tasks inside of the task schema
 /*********************************************************************************************************************/
 function tasks (req, res) {
-    console.log('[ INFO ] ' + 'getting all tasks');
     Tasks.find({})
         .exec((err, returned) => {
             if(err) {
                 console.log('[ Error ] ' + err);
                 resposne.custom_reponse(req,res,'500','Error Occured When returning Tasks');
             } else {
-                // console.log('[ INFO ] ' + JSON.stringify(returned));
                 resposne.custom_reponse(req,res,'200',returned);
             }
         });
+};
+/*********************************************************************************************************************/
+// Returns all tasks by user inside of the task schema
+/*********************************************************************************************************************/
+function tasks_by_user (req, res) {
+    var parms = resposne.get_parms(req);
+    Tasks.find({ tasks_owners: parms.user })
+        .exec((err, returned) => {
+            if(err) {
+                console.log('[ Error ] ' + err);
+                resposne.custom_reponse(req,res,'500','Error Occured When returning Tasks');
+            } else {
+                resposne.custom_reponse(req,res,'200',returned);
+            }
+        });
+};
+/*********************************************************************************************************************/
+// Removes record from database
+/*********************************************************************************************************************/
+function del_by_id (req, res) {
+    let parms = resposne.get_parms(req);
+    mongoose.set('useFindAndModify', false);
+    if(parms.tid !== ''){
+        Tasks.deleteOne({ _id: parms.tid })
+            .exec((err, returned) => {
+                if(err) {
+                    console.log('[ Error ] ' + err);
+                    resposne.custom_reponse(req,res,'500','Error Occured When deleting Task - ' + parms.tid);
+                } else {
+                    resposne.custom_reponse(req,res,'200','The following Task was deleted - ' + parms.tid);
+                }
+            });
+    }
+};
+/*********************************************************************************************************************/
+// Updates record in database
+/*********************************************************************************************************************/
+function update_by_id (req, res) {
+    let parms = resposne.get_parms(req);
+    if(parms.tid !== ''){
+        let query = { '_id' : parms.tid };
+        let update = {
+            'tasks_name' : parms.tasks_name,
+            'tasks_time' : parms.tasks_time,
+            'tasks_project' : parms.tasks_project,
+            'tasks_owners' : parms.tasks_owners,
+            'tasks_duedate' : parms.tasks_duedate,
+        };
+        Tasks.findOneAndUpdate(query, update, {upsert:true})
+            .exec((err, returned) => {
+                if(err) {
+                    console.log('[ Error ] ' + err);
+                    resposne.custom_reponse(req,res,'500','Error Occured When updating Task - ' + parms.tid);
+                } else {
+                    resposne.custom_reponse(req,res,'200','The following Task was updated - ' + parms.tid);
+                }
+            });
+    }
+};
+/*********************************************************************************************************************/
+// Updates record in database
+/*********************************************************************************************************************/
+function insert_one (req, res) {
+    let parms = resposne.get_parms(req);
+    if(
+        parms.tasks_name != null &&
+        parms.tasks_time != null &&
+        parms.tasks_project != null &&
+        parms.tasks_owners != null &&
+        parms.tasks_duedate != null
+    ){
+        let insert = new Tasks();
+        insert.tasks_name = parms.tasks_name,
+        insert.tasks_time = parms.tasks_time,
+        insert.tasks_project = parms.tasks_project,
+        insert.tasks_owners = parms.tasks_owners,
+        insert.tasks_duedate = parms.tasks_duedate
+
+        insert.save((err, returned) => {
+                if(err) {
+                    console.log('[ Error ] ' + err);
+                    resposne.custom_reponse(req,res,'500','Error Occured When adding Task');
+                } else {
+                    console.log(returned);
+                    resposne.custom_reponse(req,res,'200','The following Task was added - ' + returned._id);
+                }
+        });
+    }else{
+        resposne.custom_reponse(req,res,'500','Missing Parameters - Can not add to Tasks.');
+    }
 };
 /*********************************************************************************************************************/
 // Sample Tasks
@@ -33,23 +123,22 @@ function tasks (req, res) {
 function sample_data (req, res) {
     console.log('[ INFO ] ' + 'inserting some tasks');
     let tasks = [
-        {id: '1', tasks_name : 'test1', tasks_time : '24', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/11/2019'},
-        {id: '2', tasks_name : 'test2', tasks_time : '1', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/12/2019'},
-        {id: '3', tasks_name : 'test3', tasks_time : '2', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/01/2019'},
-        {id: '4', tasks_name : 'test4', tasks_time : '5', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/02/2019'},
-        {id: '5', tasks_name : 'test5', tasks_time : '6', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/13/2019'},
-        {id: '6', tasks_name : 'test1', tasks_time : '20', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/11/2019'},
-        {id: '7', tasks_name : 'test2', tasks_time : '21', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/12/2019'},
-        {id: '8', tasks_name : 'test3', tasks_time : '22', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/01/2019'},
-        {id: '9', tasks_name : 'test4', tasks_time : '25', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/02/2019'},
-        {id: '10', tasks_name : 'test5', tasks_time : '36', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/13/2019'},
-        {id: '11', tasks_name : 'test1', tasks_time : '16', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/11/2019'},
-        {id: '12', tasks_name : 'test2', tasks_time : '11', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/12/2019'},
-        {id: '13', tasks_name : 'test3', tasks_time : '12', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/01/2019'},
-        {id: '14', tasks_name : 'test4', tasks_time : '15', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/02/2019'},
-        {id: '15', tasks_name : 'test5', tasks_time : '46', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/13/2019'}
+        {tasks_name : 'test1', tasks_time : '24', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/11/2019'},
+        {tasks_name : 'test2', tasks_time : '1', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/12/2019'},
+        {tasks_name : 'test3', tasks_time : '2', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/01/2019'},
+        {tasks_name : 'test4', tasks_time : '5', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/02/2019'},
+        {tasks_name : 'test5', tasks_time : '6', tasks_project : 'test', tasks_owners : 'Jill', tasks_duedate : '12/13/2019'},
+        {tasks_name : 'test1', tasks_time : '20', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/11/2019'},
+        {tasks_name : 'test2', tasks_time : '21', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/12/2019'},
+        {tasks_name : 'test3', tasks_time : '22', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/01/2019'},
+        {tasks_name : 'test4', tasks_time : '25', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/02/2019'},
+        {tasks_name : 'test5', tasks_time : '36', tasks_project : 'test', tasks_owners : 'John', tasks_duedate : '12/13/2019'},
+        {tasks_name : 'test1', tasks_time : '16', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/11/2019'},
+        {tasks_name : 'test2', tasks_time : '11', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/12/2019'},
+        {tasks_name : 'test3', tasks_time : '12', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/01/2019'},
+        {tasks_name : 'test4', tasks_time : '15', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/02/2019'},
+        {tasks_name : 'test5', tasks_time : '46', tasks_project : 'test', tasks_owners : 'Joe', tasks_duedate : '12/13/2019'}
     ];
-
     Tasks.find({})
         .exec((err, returned) => {
             if(err) {
@@ -62,7 +151,6 @@ function sample_data (req, res) {
                             console.log('[ Error ] ' + err);
                             resposne.custom_reponse(req,res,'500','Error Occured When returning Tasks');
                         } else {
-                            // console.log('[ INFO ] ' + JSON.stringify(tasks));
                             resposne.custom_reponse(req,res,'200','Inserting Tasks');
                         }
                     });
@@ -87,27 +175,23 @@ function remove_sample_data (req, res) {
     });
 };
 /*********************************************************************************************************************/
-// Test Output
-/*********************************************************************************************************************/
-function testoutput (req, res) {
-    resposne.custom_reponse(req,res,'200','Testing output');
-};
-
-/*********************************************************************************************************************/
 // Module public methods
 /*********************************************************************************************************************/
 module.exports = {
     get_all : (req, res) => {
         tasks(req,res);
     },
-    get_user_colletion : (req, res) => {
-        testoutput(req,res);
+    get_user_tasks : (req, res) => {
+        tasks_by_user(req,res);
     },
-    set_one : (req, res) => {
-		testoutput(req,res);
+    update_one : (req, res) => {
+		update_by_id(req,res);
+    },
+    insert_one : (req, res) => {
+		insert_one(req,res);
     },
     remove : (req, res) => {
-        testoutput(req,res);
+        del_by_id(req,res);
     },
     sample_data : (req, res) => {
         sample_data(req,res);
