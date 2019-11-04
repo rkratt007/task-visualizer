@@ -47,7 +47,7 @@ export default {
       console.log(this.form);
       const response = await Tasks.set_task_byid(this.$route.params.id,this.form);
       console.log(response);
-      this.$router.go(-1);
+      window.location.href = "/tasks/view/" + this.form.tasks_owners;
     },
     date_formater(value) {
       let current_datetime = new Date(value);

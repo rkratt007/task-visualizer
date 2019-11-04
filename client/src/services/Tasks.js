@@ -98,4 +98,10 @@ export default {
     }
     return response;
   },
+  async install_sample_tasks() {
+    await Api().get("tasks/sample/install");
+  },
+  async delete_sample_tasks() {
+    await Api().get("tasks/sample/delete");
+  },
 };

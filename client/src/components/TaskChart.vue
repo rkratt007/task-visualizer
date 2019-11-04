@@ -2,6 +2,7 @@
   <div id="app">
     <div id="content">
       <canvas ref="chart"></canvas>
+      <button @click="install_sample">Install Sample Data</button> <button @click="delete_sample">Clear Data</button>
     </div>
   </div>
 </template>
@@ -39,7 +40,7 @@ export default {
       CNotStarted = response.ns;
       CMax = response.max;
 
-      if(myChart != null){
+      if (myChart != null) {
         myChart.destroy();
       }
 
@@ -129,6 +130,14 @@ export default {
         }
       ];
       myChart.update();
+    },
+    async install_sample() {
+      Tasks.install_sample_tasks();
+      this.$router.go(0);
+    },
+    delete_sample() {
+      Tasks.delete_sample_tasks();
+      this.$router.go(0);
     }
   }
 };
@@ -144,7 +153,8 @@ export default {
   margin-top: 60px;
 }
 #content {
-  margin: auto;
+  margin-right: auto;
+  margin-left: auto;
   width: 1024px;
   background-color: #ffffff;
   padding: 20px;
