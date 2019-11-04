@@ -52,7 +52,7 @@ When you open Vue.js App in the browser you will see a blank graph and two butto
 - The Chart is interactive and refresh every 10 seconds. 
 - If you want to view the tasks just click the bar of the user on the chart
 - Currently you have the ablity to Edit and Delete Task records.
-- Hopefully later 12-02-2019 I will have the create form created and work. Currnetly the endpoint in the api is already built out.
+- Hopefully later 12-02-2019 I will have the create task form created and working. Currnetly the endpoint in the api is already built out.
 
 Note: This application was built in less then 2 days from scratch. So just remeber, that rome wasn't built in a day and if you want something perfect. You need more time for this.
 
