@@ -1,7 +1,14 @@
 <template>
   <div>
-    <h1>Tasks</h1>
-    <button @click="home">Back to Tasks Overview</button>
+    <h6>Tasks for {{this.$route.params.user}}</h6>
+    <div>
+      <b-table small striped hover :items="items" :fields="fields" responsive="sm">
+        <template v-slot:cell(tasks_name)="data">
+          <a :href="`/tasks/edit/${data.item._id}`">{{ data.item.tasks_name }}</a>
+        </template>
+      </b-table>
+    </div>
+    <button @click="home">Back</button>
   </div>
 </template>
 
@@ -9,13 +16,39 @@
 import Tasks from "@/services/Tasks";
 export default {
   methods: {
-    async gettasks() {
-      const response = await Tasks.get_tasks();
-      console.log(response.data);
-    },
     home() {
       window.location.href = "/";
+    },
+    edit_task(key, value) {
+      console.log(key);
+      return `${value._id} ${value.tasks_name}`
+    },
+    date_formater(value) {
+      let current_datetime = new Date(value);
+      let formatted_date = current_datetime.getDate() + "-" + (current_datetime.getMonth() + 1) + "-" + current_datetime.getFullYear();
+      return formatted_date;
     }
+  },
+  async created() {
+    const response = await Tasks.get_tasks(this.$route.params.user);
+    this.items = response;
+  },
+  data: function() {
+      return {
+        fields: [
+            { key: "tasks_name", label: "Edit"},
+            { key: "tasks_project", label: "Project"},
+            { key: "task_status", label: "Status", sortable: true },
+            { key: "tasks_time", label: "Est. Hours", sortable: true },
+            {
+              key: "tasks_duedate",
+              label: "Due Date",
+              sortable: true,
+              formatter: "date_formater"
+            }
+        ],
+        items: []
+      };
   }
 };
 </script>

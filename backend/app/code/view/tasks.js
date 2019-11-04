@@ -100,7 +100,7 @@ function insert_one (req, res) {
     ){
         let insert = new Tasks();
         insert.tasks_name = parms.tasks_name,
-        insert.tasks_status = parms.task_status,
+        insert.task_status = parms.task_status,
         insert.tasks_time = parms.tasks_time,
         insert.tasks_project = parms.tasks_project,
         insert.tasks_owners = parms.tasks_owners,

@@ -1,119 +1,131 @@
 <template>
-    <div id="app">
-        <div id="content">
-            <canvas ref="chart"></canvas>
-        </div>
+  <div id="app">
+    <div id="content">
+      <canvas ref="chart"></canvas>
     </div>
+  </div>
 </template>
 
 <script>
-import Chart from 'chart.js';
+import Chart from "chart.js";
+import Tasks from "@/services/Tasks";
 
-const CLables = ['John','Jill','Joe'],
-    CCompleted = [30, 50, 10],
-    CProgress = [20, 0, 50],
-    CNotStarted = [11, 50 , 15],
-    CMax = 110
-    ;
-let myChart = ''
-
-
+let CLables = [],
+  CCompleted = [],
+  CProgress = [],
+  CNotStarted = [],
+  CMax = 0;
+let myChart = null;
 
 export default {
-name: 'app',
-mounted() {
+  name: "app",
+  mounted() {
     this.interval = setInterval(() => {
+      this.createChart();
+    }, 10000);
     this.createChart();
-    },10000);
-    this.createChart();
-},
-destroyed() {
+  },
+  destroyed() {
     clearInterval(this.interval);
-},
-methods: {
-    createChart() {
-    let chart = this.$refs.chart;
-    let ctx = chart.getContext("2d");
-    // let myChart = '';
-    if(myChart == ''){
-        myChart = new Chart(ctx, {
-        type: 'bar',
+  },
+  methods: {
+    async createChart() {
+      let chart = this.$refs.chart;
+      let ctx = chart.getContext("2d");
+      const response = await Tasks.get_all_tasks();
+      CLables = response.owners;
+      CCompleted = response.c;
+      CProgress = response.ip;
+      CNotStarted = response.ns;
+      CMax = response.max;
+
+      if(myChart != null){
+        myChart.destroy();
+      }
+
+      myChart = new Chart(ctx, {
+        type: "bar",
         data: {
-            labels: CLables,
-            datasets: [
+          labels: CLables,
+          datasets: [
             {
-                label: 'Completed',
-                data: CCompleted,
-                backgroundColor: '#03fc84'
+              label: "Completed",
+              data: CCompleted,
+              backgroundColor: "#03fc84"
             },
             {
-                label: 'In Progress',
-                data: CProgress,
-                backgroundColor: '#fce303'
+              label: "In Progress",
+              data: CProgress,
+              backgroundColor: "#fce303"
             },
             {
-                label: 'Not Started',
-                data: CNotStarted,
-                backgroundColor: 'gray'
-            },
-            ]
+              label: "Not Started",
+              data: CNotStarted,
+              backgroundColor: "#cccccc"
+            }
+          ]
         },
         options: {
-            title: {
+          title: {
             display: true,
             text: "Task Overview By User"
-            },
-            tooltips: {
-            mode: 'index',
+          },
+          tooltips: {
+            mode: "index",
             intersect: true
-            },
-            scales: {
-            yAxes: [{
+          },
+          scales: {
+            yAxes: [
+              {
                 ticks: {
-                beginAtZero: true,
-                suggestedMax: CMax
+                  beginAtZero: true,
+                  suggestedMax: CMax
                 },
                 stacked: true
-            }],
-            xAxes: [{
+              }
+            ],
+            xAxes: [
+              {
                 ticks: {
-                beginAtZero: true
+                  beginAtZero: true
                 },
                 stacked: true
-            }]
-            },
-            onClick: (event) => {
-            var activePoints = myChart.getElementsAtEventForMode(event, "point", myChart.options);
-            if(activePoints.length > 0) {
-                const firstPoint = activePoints[0];
-                const label = myChart.data.labels[firstPoint._index];
-                window.location.href = '/tasks/view/'+label;
+              }
+            ]
+          },
+          onClick: event => {
+            var activePoints = myChart.getElementsAtEventForMode(
+              event,
+              "point",
+              myChart.options
+            );
+            if (activePoints.length > 0) {
+              const firstPoint = activePoints[0];
+              const label = myChart.data.labels[firstPoint._index];
+              window.location.href = "/tasks/view/" + label;
             }
-            }
+          }
         }
-        });
-    }else{
-        this.updateChart();
-    }
+      });
+      myChart.update();
     },
     updateChart() {
-    console.log('updating charts every 10 second.');
-    myChart.data
-    myChart.data.datasets = [
+      console.log("updating charts every 10 second.");
+      myChart.data.datasets = [
         {
-        label: 'Completed',
-        data: CCompleted,
-        backgroundColor: "#03fc84"
+          label: "Completed",
+          data: CCompleted,
+          backgroundColor: "#03fc84"
         },
         {
-        label: 'In Progress',
-        data: CProgress,
-        backgroundColor: "#fce303"
+          label: "In Progress",
+          data: CProgress,
+          backgroundColor: "#fce303"
         },
         {
-        label: 'Not Started',
-        data: CNotStarted,
-        backgroundColor: "gray"
+          label: "Not Started",
+          data: CNotStarted,
+          backgroundColor: "gray"
         }
       ];
       myChart.update();
