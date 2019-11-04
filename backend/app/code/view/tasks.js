@@ -43,6 +43,21 @@ function tasks_by_user (req, res) {
         });
 };
 /*********************************************************************************************************************/
+// Returns Tasks by id
+/*********************************************************************************************************************/
+function tasks_by_id (req, res) {
+    var parms = resposne.get_parms(req);
+    Tasks.find({ _id: parms.tid })
+        .exec((err, returned) => {
+            if(err) {
+                console.log('[ Error ] ' + err);
+                resposne.custom_reponse(req,res,'500','Error Occured When returning Tasks');
+            } else {
+                resposne.custom_reponse(req,res,'200',returned);
+            }
+        });
+};
+/*********************************************************************************************************************/
 // Removes record from database
 /*********************************************************************************************************************/
 function del_by_id (req, res) {
@@ -65,7 +80,14 @@ function del_by_id (req, res) {
 /*********************************************************************************************************************/
 function update_by_id (req, res) {
     let parms = resposne.get_parms(req);
-    if(parms.tid != null){
+    if( parms.tid != null &&
+        parms.tasks_name != null &&
+        parms.task_status != null &&
+        parms.tasks_time != null &&
+        parms.tasks_project != null &&
+        parms.tasks_owners != null &&
+        parms.tasks_duedate != null
+    ){
         let query = { '_id' : parms.tid };
         let update = {
             'tasks_name' : parms.tasks_name,
@@ -73,7 +95,9 @@ function update_by_id (req, res) {
             'tasks_project' : parms.tasks_project,
             'tasks_owners' : parms.tasks_owners,
             'tasks_duedate' : parms.tasks_duedate,
+            'task_status' :parms.task_status
         };
+        mongoose.set('useFindAndModify', false);
         Tasks.findOneAndUpdate(query, update, {upsert:true})
             .exec((err, returned) => {
                 if(err) {
@@ -111,7 +135,6 @@ function insert_one (req, res) {
                     console.log('[ Error ] ' + err);
                     resposne.custom_reponse(req,res,'500','Error Occured When adding Task');
                 } else {
-                    console.log(returned);
                     resposne.custom_reponse(req,res,'200','The following Task was added - ' + returned._id);
                 }
         });
@@ -183,6 +206,9 @@ module.exports = {
     },
     get_user_tasks : (req, res) => {
         tasks_by_user(req,res);
+    },
+    get_tasks_byid : (req, res) => {
+        tasks_by_id(req,res);
     },
     update_one : (req, res) => {
 		update_by_id(req,res);

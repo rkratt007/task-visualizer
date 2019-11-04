@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 // import Home from "../views/Home.vue";
 import DisplayTasks from '../components/DisplayTasks'
 import TaskChart from '../components/TaskChart'
+import EditTasks from '../components/EditTasks'
 Vue.use(VueRouter);
 
 const routes = [
@@ -22,9 +23,9 @@ const routes = [
     component: DisplayTasks
   },
   {
-    path: '/tasks/edit/:id',
+    path: '/tasks/edit/:user/:id',
     name: 'tasks-edit',
-    component: DisplayTasks
+    component: EditTasks
   },
   {
     path: '/tasks/add',

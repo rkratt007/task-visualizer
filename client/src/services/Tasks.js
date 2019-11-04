@@ -77,5 +77,25 @@ export default {
       };
     }
     return respons_arry;
-  }
+  },
+  async del_tasks(id) {
+    let response = await Api().get("delete/" + id);
+    console.log(response);
+    return response;
+  },
+  async get_task_byid(id) {
+    let response = await Api().get("tasks/" + id);
+    if (response.data.code == "200") {
+      response = await response.data.result.Output;
+    }
+    return response;
+  },
+  async set_task_byid(id,form) {
+    console.log(form);
+    let response = await Api().post("tasks/update/" + id ,form);
+    if (response.data.code == "200") {
+      response = await response.data.result.Output;
+    }
+    return response;
+  },
 };

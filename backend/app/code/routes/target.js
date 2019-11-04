@@ -7,6 +7,8 @@ module.exports = function (app) {
         .get(tasks.get_tasks)
     app.route('/api/v1/tasks/by_user/:user')
         .get(tasks.get_tasks_by_user)
+    app.route('/api/v1/tasks/:tid')
+        .get(tasks.get_tasks_by_id)
     app.route('/api/v1/delete/:tid')
         .get(tasks.del_task)
         .post(tasks.del_task)

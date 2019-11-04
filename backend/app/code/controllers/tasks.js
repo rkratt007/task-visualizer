@@ -9,6 +9,9 @@ module.exports = {
     get_tasks_by_user : (req, res) => {
         tasks.get_user_tasks(req,res);
     },
+    get_tasks_by_id : (req, res) => {
+        tasks.get_tasks_byid(req,res);
+    },
     set_task_update : (req, res) => {
         tasks.update_one(req,res);
     },
