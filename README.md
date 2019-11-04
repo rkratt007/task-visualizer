@@ -54,7 +54,7 @@ When you open Vue.js App in the browser you will see a blank graph and two butto
 - Currently you have the ablity to Edit and Delete Task records.
 - Hopefully later 12-02-2019 I will have the create form created and work. Currnetly the endpoint in the api is already built out.
 
-Note: This application was built in less then 2 days from scratch. So just remeber, that rome wasn't built in a day and if want something perfect. You need to pay to play...
+Note: This application was built in less then 2 days from scratch. So just remeber, that rome wasn't built in a day and if you want something perfect. You need more time for this.
 
 If you have any questions or feature request please send me an email to rkratt@gmail.com
 
