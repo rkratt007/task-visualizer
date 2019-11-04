@@ -63,5 +63,7 @@ If you have any questions or feature request please send me an email to rkratt@g
 ## :spiral_notepad: Resources & Notes
 - [Vue.js](https://vuejs.org/v2/guide/)
 - [Express.js](https://expressjs.com/)
+- [Charts.js](https://www.chartjs.org/docs/latest/)
 - [Node.js](https://nodejs.org/en/docs/)
+- [Mongoose](https://mongoosejs.com/docs/)
 - [Express.js](https://expressjs.com/)
